@@ -1,6 +1,6 @@
 package tasks;
 
-import managers.Manager;
+import manager.Manager;
 
 public class Task {
     private final int id;
