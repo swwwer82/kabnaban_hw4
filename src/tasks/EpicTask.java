@@ -9,7 +9,6 @@ public class EpicTask extends Task {
     public EpicTask(String titleEpicTask, String descriptionEpicTask) {
         super(titleEpicTask, descriptionEpicTask);
         this.subTasks = new ArrayList<>();
-        this.setStatus("NEW");
     }
 
     public List<SubTask> getSubTasks() {

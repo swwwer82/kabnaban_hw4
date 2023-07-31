@@ -3,9 +3,9 @@ package tasks;
 public class Task {
     private static int count = 0;
     protected final int id;
-    private String title;
-    private String description;
-    private String status = "NEW";
+    protected String title;
+    protected String description;
+    protected String status = "NEW";
 
     public Task(String titleTask, String descriptionTask) {
         this.id = generateId();

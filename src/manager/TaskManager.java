@@ -103,8 +103,9 @@ public class TaskManager {
         return new ArrayList<>(subTaskStorage.values());
     }
 
-    public String getEpicTaskStatus(List<SubTask> subTasks) {
+    private String updateEpicStatus(int epicId) {
         String statusEpicTask;
+        List<SubTask> subTasks = getSubTasksForEpic(epicId);
         int countNew = 0;
         int countDone = 0;
 
@@ -116,7 +117,7 @@ public class TaskManager {
                 countDone++;
             }
         }
-        if ((subTasks.isEmpty()) || (countNew == subTasks.size())) {
+        if (subTasks.isEmpty() || countNew == subTasks.size()) {
             statusEpicTask = "NEW";
         } else if (countDone == subTasks.size()) {
             statusEpicTask = "DONE";
@@ -125,4 +126,15 @@ public class TaskManager {
         }
         return statusEpicTask;
     }
+
+    private List<SubTask> getSubTasksForEpic(int epicId) {
+        List<SubTask> subTasksForEpic = new ArrayList<>();
+        for (SubTask subTask : subTaskStorage.values()) {
+            if (subTask.epicId == epicId) {
+                subTasksForEpic.add(subTask);
+            }
+        }
+        return subTasksForEpic;
+    }
+
 }
