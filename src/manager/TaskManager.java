@@ -53,7 +53,7 @@ public class TaskManager {
 
     public void addSubTask(SubTask subTask) {
         subTaskStorage.put(subTask.getId(), subTask);
-        updateEpicStatus(subTask.getId());
+        updateEpicStatus(subTask.epicId);
     }
 
     public Task getTaskById(int id) {
@@ -78,7 +78,7 @@ public class TaskManager {
 
     public void updateSubTask(SubTask subTask) {
         subTaskStorage.put(subTask.getId(), subTask);
-        updateEpicStatus(subTask.getId());
+        updateEpicStatus(subTask.epicId);
     }
 
     public void deleteTask(Task task) {
@@ -91,7 +91,7 @@ public class TaskManager {
 
     public void deleteSubTask(SubTask subTask) {
         subTaskStorage.remove(subTask.getId());
-        updateEpicStatus(subTask.getId());
+        updateEpicStatus(subTask.epicId);
 
     }
 
