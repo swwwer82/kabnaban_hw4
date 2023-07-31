@@ -1,26 +1,23 @@
 package tasks;
 
-import manager.Manager;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class EpicTask extends Task {
     private final List<SubTask> subTasks;
-    Manager manager = new Manager();
 
-    public EpicTask(String titleEpicTask, String descriptionEpicTask, ArrayList<SubTask> subTasks) {
+    public EpicTask(String titleEpicTask, String descriptionEpicTask) {
         super(titleEpicTask, descriptionEpicTask);
-        this.setStatus(manager.getEpicTaskStatus(subTasks));
-        this.subTasks = subTasks;
-    }
-
-    public EpicTask(EpicTask epicTask) {
-        this(epicTask.getTitle(), epicTask.getDescription(), (ArrayList<SubTask>) epicTask.subTasks);
+        this.subTasks = new ArrayList<>();
+        this.setStatus("NEW");
     }
 
     public List<SubTask> getSubTasks() {
         return subTasks;
+    }
+
+    public void addSubtask(SubTask subTask) {
+        subTasks.add(subTask);
     }
 
     @Override

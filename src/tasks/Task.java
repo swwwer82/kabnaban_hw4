@@ -1,31 +1,20 @@
 package tasks;
 
-import manager.Manager;
-
 public class Task {
-    private final int id;
+    private static int count = 0;
+    protected final int id;
     private String title;
     private String description;
-    private String status;
-    Manager manager = new Manager();
+    private String status = "NEW";
 
-    public Task(String titleTask, String descriptionTask, String statusTask) {
-        this.id = manager.getId() + 1;
-        manager.setId(this.id);
-        this.title = titleTask;
-        this.description = descriptionTask;
-        this.status = statusTask;
-    }
-
-    Task(String titleTask, String descriptionTask) {
-        this.id = manager.getId() + 1;
-        manager.setId(this.id);
+    public Task(String titleTask, String descriptionTask) {
+        this.id = generateId();
         this.title = titleTask;
         this.description = descriptionTask;
     }
 
-    public Task(Task task) {
-        this(task.title, task.description, task.status);
+    private static Integer generateId() {
+        return ++count;
     }
 
     public int getId() {
@@ -52,10 +41,9 @@ public class Task {
         return status;
     }
 
-    void setStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
-
 
     @Override
     public String toString() {
