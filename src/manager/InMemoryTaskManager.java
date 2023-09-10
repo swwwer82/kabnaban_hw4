@@ -172,13 +172,16 @@ public class InMemoryTaskManager implements TaskManager {
             statusEpicTask = Status.IN_PROGRESS;
         }
 
-        // Теперь устанавливаем статус эпической задаче
+        // Проверяем, существует ли EpicTask с заданным epicId
         EpicTask epicTask = getEpicTaskById(epicId);
         if (epicTask != null) {
             epicTask.setStatus(statusEpicTask.toString());
             updateEpicTask(epicTask);
+        } else {
+            System.out.println("EpicTask с id " + epicId + " не найден.");
         }
     }
+
 
     @Override
     public List<SubTask> getSubTasksForEpic(int epicId) {
