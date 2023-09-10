@@ -1,11 +1,13 @@
 package tasks;
 
+import statusOfTask.Status;
+
 public class Task {
     private static int count = 0;
     protected final int id;
     protected String title;
     protected String description;
-    protected String status = "NEW";
+    protected Status status;
 
     public Task(String titleTask, String descriptionTask) {
         this.id = generateId();
@@ -37,12 +39,12 @@ public class Task {
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = Status.valueOf(status);
     }
 
     @Override
