@@ -13,7 +13,15 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> taskStorage = new HashMap<>();
     private final Map<Integer, EpicTask> epicTaskStorage = new HashMap<>();
     private final Map<Integer, SubTask> subTaskStorage = new HashMap<>();
-    private final HistoryManager historyManager = new InMemoryHistoryManager();
+    public   HistoryManager historyManager;
+
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+    //по другому не удалось избежать NPE при вызове add.history из метода getTaskById
+    //лучшей реализации в голову не пришло
+
 
     @Override
     public Map<Integer, Task> getTaskStorage() {
@@ -48,35 +56,43 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) {
         taskStorage.put(task.getId(), task);
-        historyManager.addToHistory(task);
     }
 
     @Override
     public void addEpicTask(EpicTask epicTask) {
         epicTaskStorage.put(epicTask.getId(), epicTask);
-        historyManager.addToHistory(epicTask);
     }
 
     @Override
     public void addSubTask(SubTask subTask) {
         subTaskStorage.put(subTask.getId(), subTask);
         updateEpicStatus(subTask.epicId);
-        historyManager.addToHistory(subTask);
     }
 
     @Override
-    public Task getTaskById(int id) {
-        return taskStorage.get(id);
+    public void getTaskById(int id) {
+        Task task = taskStorage.get(id);
+        if (task != null) {
+            historyManager.addToHistory(task); // все методы получения истории перенес
+        }
     }
 
     @Override
     public EpicTask getEpicTaskById(int id) {
-        return epicTaskStorage.get(id);
+        EpicTask epicTask = epicTaskStorage.get(id);
+        if (epicTask != null) {
+            historyManager.addToHistory(epicTask);
+        }
+        return epicTask;
     }
 
     @Override
     public SubTask getSubTaskById(int id) {
-        return subTaskStorage.get(id);
+        SubTask subTask = subTaskStorage.get(id);
+        if (subTask != null) {
+            historyManager.addToHistory(subTask);
+        }
+        return subTask;
     }
 
     @Override
@@ -169,7 +185,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return subTasksForEpic;
     }
-
+    @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
     }
