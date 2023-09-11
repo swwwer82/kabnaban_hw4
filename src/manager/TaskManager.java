@@ -11,7 +11,6 @@ public interface TaskManager {
     Map<Integer, Task> getTaskStorage();
     Map<Integer, EpicTask> getEpicTaskStorage();
     Map<Integer, SubTask> getSubTaskStorage();
-    List<Task> getHistory();
     void saveTaskStorage(Task task);
     void saveEpicTaskStorage(EpicTask epic);
     void saveSubTaskStorage(SubTask subTask);

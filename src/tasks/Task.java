@@ -13,6 +13,7 @@ public class Task {
         this.id = generateId();
         this.title = titleTask;
         this.description = descriptionTask;
+        this.status = Status.NEW;
     }
 
     private static Integer generateId() {

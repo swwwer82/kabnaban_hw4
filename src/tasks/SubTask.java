@@ -3,9 +3,9 @@ package tasks;
 public class SubTask extends Task {
      public final int epicId;
 
-    public SubTask(int id, String nameSubTask, String descriptionSubTask, String done) {
+    public SubTask(int epicId, String nameSubTask, String descriptionSubTask) {
         super(nameSubTask, descriptionSubTask);
-        this.epicId = id;
+        this.epicId = epicId;
     }
 
     @Override

@@ -11,14 +11,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager   {
 
     private final Map<Integer, Task> taskStorage = new HashMap<>();
 
     private final Map<Integer, EpicTask> epicTaskStorage = new HashMap<>();
 
     private final Map<Integer, SubTask> subTaskStorage = new HashMap<>();
-    private final List<Task> history = new ArrayList<>();
+    private final HistoryManager historyManager;
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
 
 
     @Override
@@ -36,10 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
         return subTaskStorage;
     }
 
-    @Override
-    public List<Task> getHistory() {
-        return new ArrayList<>(history);
-    }
+
 
 
     @Override
@@ -60,52 +61,34 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) {
         taskStorage.put(task.getId(), task);
+        historyManager.addToHistory(task);
     }
 
     @Override
     public void addEpicTask(EpicTask epicTask) {
         epicTaskStorage.put(epicTask.getId(), epicTask);
+        historyManager.addToHistory(epicTask);
     }
 
     @Override
     public void addSubTask(SubTask subTask) {
         subTaskStorage.put(subTask.getId(), subTask);
         updateEpicStatus(subTask.epicId);
+        historyManager.addToHistory(subTask);
     }
 
     @Override
     public Task getTaskById(int id) {
-        Task task = taskStorage.get(id);
-        if (task != null && !history.contains(task)) {
-            history.add(0, task); // Добавляем задачу в начало истории, если её там еще нет
-            if (history.size() > 10) {
-                history.remove(history.size() - 1); // Ограничиваем историю 10 элементами
-            }
-        }
-        return task;
+        return taskStorage.get(id);
     }
 
     @Override
     public EpicTask getEpicTaskById(int id) {
-        EpicTask epicTask = epicTaskStorage.get(id);
-        if (epicTask != null && !history.contains(epicTask)) {
-            history.add(0, epicTask);
-            if (history.size() > 10) {
-                history.remove(history.size() - 1);
-            }
-        }
-        return epicTask;
+        return epicTaskStorage.get(id);
     }
     @Override
     public SubTask getSubTaskById(int id) {
-        SubTask subTask = subTaskStorage.get(id);
-        if (subTask != null && !history.contains(subTask)) {
-            history.add(0, subTask);
-            if (history.size() > 10) {
-                history.remove(history.size() - 1);
-            }
-        }
-        return subTask;
+        return subTaskStorage.get(id);
     }
     @Override
     public void updateTask(Task task) {
