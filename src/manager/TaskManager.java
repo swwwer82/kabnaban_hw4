@@ -5,9 +5,7 @@ import tasks.*;
 import java.util.List;
 import java.util.Map;
 
-
 public interface TaskManager {
-
     Map<Integer, Task> getTaskStorage();
     Map<Integer, EpicTask> getEpicTaskStorage();
     Map<Integer, SubTask> getSubTaskStorage();
@@ -29,9 +27,6 @@ public interface TaskManager {
     List<Task> getTasks();
     List<EpicTask> getEpicTasks();
     List<SubTask> getSubTasks();
-
-    void updateEpicStatus(int epicId);
-
     List<SubTask> getSubTasksForEpic(int epicId);
+    List<Task> getHistory();
 }
-

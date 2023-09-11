@@ -1,29 +1,19 @@
 package manager;
 
-
 import statusOfTask.Status;
-import tasks.EpicTask;
-import tasks.SubTask;
-import tasks.Task;
+import tasks.*;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryTaskManager implements TaskManager   {
-
+public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> taskStorage = new HashMap<>();
-
     private final Map<Integer, EpicTask> epicTaskStorage = new HashMap<>();
-
     private final Map<Integer, SubTask> subTaskStorage = new HashMap<>();
-    private final HistoryManager historyManager;
-
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
-    }
-
+    private final HistoryManager historyManager = new InMemoryHistoryManager();
 
     @Override
     public Map<Integer, Task> getTaskStorage() {
@@ -39,9 +29,6 @@ public class InMemoryTaskManager implements TaskManager   {
     public Map<Integer, SubTask> getSubTaskStorage() {
         return subTaskStorage;
     }
-
-
-
 
     @Override
     public void saveTaskStorage(Task task) {
@@ -86,53 +73,61 @@ public class InMemoryTaskManager implements TaskManager   {
     public EpicTask getEpicTaskById(int id) {
         return epicTaskStorage.get(id);
     }
+
     @Override
     public SubTask getSubTaskById(int id) {
         return subTaskStorage.get(id);
     }
+
     @Override
     public void updateTask(Task task) {
         taskStorage.put(task.getId(), task);
     }
+
     @Override
     public void updateEpicTask(EpicTask epicTask) {
         epicTaskStorage.put(epicTask.getId(), epicTask);
     }
+
     @Override
     public void updateSubTask(SubTask subTask) {
         subTaskStorage.put(subTask.getId(), subTask);
         updateEpicStatus(subTask.epicId);
     }
+
     @Override
     public void deleteTask(Task task) {
         taskStorage.remove(task.getId());
     }
+
     @Override
     public void deleteEpicTask(EpicTask epicTask) {
         epicTaskStorage.remove(epicTask.getId());
     }
+
     @Override
     public void deleteSubTask(SubTask subTask) {
         subTaskStorage.remove(subTask.getId());
         updateEpicStatus(subTask.epicId);
-
     }
+
     @Override
     public List<Task> getTasks() {
         return new ArrayList<>(this.taskStorage.values());
     }
+
     @Override
     public List<EpicTask> getEpicTasks() {
         return new ArrayList<>(epicTaskStorage.values());
     }
+
     @Override
     public List<SubTask> getSubTasks() {
         return new ArrayList<>(subTaskStorage.values());
     }
 
-    @Override
-    public void updateEpicStatus(int epicId) {
-        Status statusEpicTask = Status.NEW; // Устанавливаем начальное значение
+    private void updateEpicStatus(int epicId) {
+        Status statusEpicTask = Status.NEW;
 
         List<SubTask> subTasks = getSubTasksForEpic(epicId);
         int countNew = 0;
@@ -155,7 +150,6 @@ public class InMemoryTaskManager implements TaskManager   {
             statusEpicTask = Status.IN_PROGRESS;
         }
 
-        // Проверяем, существует ли EpicTask с заданным epicId
         EpicTask epicTask = getEpicTaskById(epicId);
         if (epicTask != null) {
             epicTask.setStatus(statusEpicTask.toString());
@@ -165,16 +159,18 @@ public class InMemoryTaskManager implements TaskManager   {
         }
     }
 
-
     @Override
     public List<SubTask> getSubTasksForEpic(int epicId) {
         List<SubTask> subTasksForEpic = new ArrayList<>();
         for (SubTask subTask : subTaskStorage.values()) {
-            if (subTask.epicId == epicId) { // Используйте epicId из параметра метода
+            if (subTask.epicId == epicId) {
                 subTasksForEpic.add(subTask);
             }
         }
         return subTasksForEpic;
     }
 
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
+    }
 }

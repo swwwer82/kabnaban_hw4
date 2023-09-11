@@ -6,10 +6,10 @@ import manager.TaskManager;
 
 public class Managers {
     private static final HistoryManager defaultHistoryManager = new InMemoryHistoryManager();
-    private static final TaskManager defaultTaskManager = new InMemoryTaskManager(defaultHistoryManager);
+    private static final TaskManager defaultTaskManager = new InMemoryTaskManager();
 
     public static TaskManager getDefaultTaskManager() {
-        return defaultTaskManager;
+        return new InMemoryTaskManager();
     }
 
     public static HistoryManager getDefaultHistoryManager() {

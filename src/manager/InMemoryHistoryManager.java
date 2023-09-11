@@ -17,23 +17,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public void addToHistory(EpicTask epicTask) {
-        history.add(0, epicTask);
-        if (history.size() > 10) {
-            history.remove(history.size() - 1);
-        }
-    }
-
-    @Override
-    public void addToHistory(SubTask subTask) {
-        history.add(0, subTask);
-        if (history.size() > 10) {
-            history.remove(history.size() - 1);
-        }
-    }
-
-    @Override
     public List<Task> getHistory() {
         return new ArrayList<>(history);
     }
 }
+
